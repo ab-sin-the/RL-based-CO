@@ -22,5 +22,24 @@ def reinforcement_learning(alpha,beta,gamma,graph,pmat1,pmat2,pmat3):
 	for i in range(n):
 		if random.random() <= pmat1[i]:
 			state.append(i) 
-def local_search(graph,state):
+
+
+def local_search(graph,state,batch_size):
+	#local search function
+	#run local search on batch size elements
+	choice = []
+	n = state.shape[0]
+	for i in range(n):u
+		choice.append(random.randint(0, n - 1))
+
+	old_state = state.copy()
+	for i in range(len(choice)):
+		state[choice[i]] = 1 - state[choice[i]]
+		if (cost_function(state,k) < cost_function(old_state,k)):
+			old_state[choice[i]] = 1 - old_state[choice[i]]
+		else:
+			state[choice[i]] = 1- state[choice[i]]
+	return old_state
+
+
 def cost_function(state,k):
