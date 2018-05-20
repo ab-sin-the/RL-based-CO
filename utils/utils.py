@@ -1,5 +1,6 @@
 import numpy as np
 import random
+from tqdm import tqdm
 
 # random.seed(1)
 def reinforcement_learning(alpha,beta,gamma,graph,pmat1,pmat2,pmat3):

@@ -2,7 +2,7 @@ import sys
 sys.path.append('../utils')
 import utils
 import numpy as np
-
+from tqdm import tqdm
 # To read input
 def read(file):
     with open(file, 'r') as input:
@@ -20,7 +20,8 @@ def read(file):
 
 def main():
 	# Main
-	(n, E) = read('../data/g4.in')
+    file_path = '../data/g4.in'
+	(n, E) = read(file_path)
 	verticles = [i for i in range(n)]  
 	print n,E
 	print verticles
