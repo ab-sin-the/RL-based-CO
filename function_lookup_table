@@ -1,4 +1,5 @@
 
 
 utils/utils:
-	local_search(graph,state,batch_size):
+	local_search(graph,state,batch_size)
+	update_function(matrix1, matrix2, matrix3, state, old_conflicts, t, alpha, beta)
