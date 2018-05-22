@@ -43,7 +43,7 @@ def local_search(graph,state,batch_size):
 	return old_state
 
 
-def reward_function(state,graph):
+def cost_function(state,graph):
 	# state is a list of 0s and 1s
 	n = graph.shape[0]
 	state_set = set()
