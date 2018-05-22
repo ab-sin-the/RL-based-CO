@@ -67,12 +67,12 @@ def update_function(matrix1, matrix2, matrix3, state, old_conflicts, t, alpha, b
 	matrix2 += (alpha / math.log(t) ) * update_matrix2
 	matrix3 += (alpha / math.log(t) ) * update_matrix3
 
-	conflicts = conflicts * beta
+	conflicts = conflicts * beta / math.log(t)
 
 	matrix1 = np.multiply(matrix1, 1 - conflicts)
 	matrix1 += np.multiply(state_01, conflicts)
 	return [matrix1, matrix2, matrix3]
-	
+
 
 def cost_function(state,graph):
 	# state is a list of 0s and 1s
