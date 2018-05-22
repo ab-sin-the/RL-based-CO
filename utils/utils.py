@@ -4,7 +4,7 @@ from tqdm import tqdm
 import math
 
 # random.seed(1)
-def reinforcement_learning(alpha,beta,gamma,graph,pmat1,pmat2,pmat3):
+def reinforcement_learning(alpha,beta,gamma,graph):
 	# alpha, beta, gamma are hyperparameters
 	# graph stores the graph information with numpy matrix
 	# pmat1~3 stores probability info
@@ -101,7 +101,7 @@ def cost_function(state,graph):
 				conflict_number += 1
 				conflict_info[i] += 1
 	reward = (conflict_number+1)/k
-	return reward
+	return reward,conflict_info
 
 
 def generate_state(pmat1,pmat2,pmat3):
