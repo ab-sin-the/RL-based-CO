@@ -43,8 +43,34 @@ def local_search(graph,state,batch_size):
 	return old_state
 
 
-def cost_function(state,k):
+def reward_function(state,graph):
+	# state is a list of 0s and 1s
+	n = graph.shape[0]
+	state_set = set()
+	connection_info = dict()
+	conflict_number = 0
+	conflict_info = np.zeros([1,n])	
+	# set to contain all chosen nodes in independent set
+	for i in range(state):
+		if (state[i] == 1):
+			state_set.add(i)
+	k = len(state_set)
+	# graph is a sparse matrix, so first represent it in a better way
+	for i in range(n):
+		temp = set()
+		for j in range(n):
+			if graph[i,j] == 1:
+				temp.add(j)
+		connection_info[i] = temp
 
+	# count conflict number
+	for i in state_set:
+		for node in connection_info[i]:
+			if node in state_set:
+				conflict_number += 1
+				conflict_info[i] += 1
+	reward = (conflict_number+1)/k
+	return reward
 
 def generate_state(pmat1,pmat2,pmat3):
 	allstate=[]
