@@ -3,7 +3,7 @@ import random
 from tqdm import tqdm
 
 # random.seed(1)
-def reinforcement_learning(alpha,beta,gamma,graph,pmat1,pmat2,pmat3):
+def reinforcement_learning(alpha,beta,gamma,graph):
 	# alpha, beta, gamma are hyperparameters
 	# graph stores the graph information with numpy matrix
 	# pmat1~3 stores probability info
