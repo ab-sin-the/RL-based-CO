@@ -44,3 +44,32 @@ def local_search(graph,state,batch_size):
 
 
 def cost_function(state,k):
+
+
+def generate_state(pmat1,pmat2,pmat3):
+	allstate=[]
+	n=len(pmat1[0])
+	for i in range(n):
+		allstate.append(-1)
+
+	chosen =[]
+	if flipcoin(max(pma1_list)):
+		chosen.append(first_index)
+		allstate[first_index]=1
+	for i in range(n-1):
+		prob=0.0
+		newnode=random.randint(0, n-1)
+		while allstate[newnode]!=-1:
+			newnode=random.randint(0, n-1)
+		for j in range(n):
+			if (allstate[j]==1):
+				prob+=pmat2[i,j]
+			if (allstate[j]==0):
+				prob+=pmat3[i,j]
+		prob/=(i+1)		
+	   	if random.random() <= prob:
+			chosen.append(newnode)
+			allstate[newnode]=1
+		else:
+			allstate[newnode]=0
+		return allstate
