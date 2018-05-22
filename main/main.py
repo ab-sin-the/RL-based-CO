@@ -21,13 +21,11 @@ def read(file):
 def main():
 	# Main
     file_path = '../data/g4.in'
-	(n, E) = read(file_path)
-	verticles = [i for i in range(n)]
-	print n,E
-	print verticles
-    
-    
-	return
+    (n, E) = read(file_path)
+    verticles = [i for i in range(n)]
+    print (n,E)
+    print (verticles)
+    return
 
 
 if __name__ == '__main__':
