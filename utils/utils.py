@@ -101,7 +101,7 @@ def cost_function(state,graph):
 				conflict_number += 1
 				conflict_info[i] += 1
 	reward = (conflict_number+1)/k
-	return reward
+	return reward,conflict_info
 
 
 def generate_state(pmat1,pmat2,pmat3):
