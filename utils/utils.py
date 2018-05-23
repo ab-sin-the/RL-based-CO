@@ -125,7 +125,7 @@ def generate_state(pmat1,pmat2,pmat3):
 			if (allstate[j]==0):
 				prob+=pmat3[i,j]
 		prob/=(i+1)		
-	   	if random.random() <= prob:
+		if random.random() <= prob:
 			chosen.append(newnode)
 			allstate[newnode]=1
 		else:
