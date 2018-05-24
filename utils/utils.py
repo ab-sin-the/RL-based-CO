@@ -43,9 +43,10 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
  		if(temp_cost < temp_best_cost):
  			temp_best_cost = temp_cost
  			temp_best_state = sub_optimal_state
- 		pmat1,pmat2,pmat3 = update_function(pmat1,pmat2,pmat3,sub_optimal_state,cost_function(sub_optimal_state,graph)[1],t,alpha,beta)
+ 		pmat1,pmat2,pmat3 = update_function(pmat1,pmat2,pmat3,sub_optimal_state,calculate_conflict(sub_optimal_state, graph),t,alpha,beta)
 	 	t += 1
-
+	print(temp_best_cost)
+	print(temp_best_state)
 
 def local_search(graph,state,batch_size):
     #local search function
