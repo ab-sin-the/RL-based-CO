@@ -124,6 +124,8 @@ def calculate_conflict(state,graph):
 				conflict_info[i] += 1
 	reward = (conflict_number+1)/k
 	return conflict_info
+
+
 def cost_function(state,graph):
 	# state is a list of 0s and 1s
 	n = graph.shape[0]
@@ -191,3 +193,4 @@ def generate_state(pmat1,pmat2,pmat3):
 		else:
 			allstate[newnode]=0
 	return allstate
+
