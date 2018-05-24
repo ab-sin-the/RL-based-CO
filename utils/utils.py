@@ -2,7 +2,7 @@ import numpy as np
 import random
 from tqdm import tqdm
 import math
-
+import time
 # random.seed(1)
 def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
 	# alpha, beta, gamma are hyperparameters
@@ -11,7 +11,7 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
 	# Initialize the probability matrix
 	n = graph.shape[0] # node number
 	t = 0
-	max_iteration = 1000
+	max_iteration = 2000
 	temp_best_cost = 99999999
 	temp_best_state = None
 	pmat1 = np.zeros([1,n])
@@ -26,7 +26,7 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
 	# Generate the First State
 	state = generate_state(pmat1,pmat2,pmat3)
 
-	while(t < max_iteration):
+	for t in tqdm(range(max_iteration)):
 	 	if (t != 0):
 	 		if(random.random()<gamma):
 	 			if (random.random()<theta):
@@ -35,7 +35,6 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
 	 				state = generate_random_state(n)
 	 		else:
 	 			state = local_search(graph,np.array(state),batch_size)
-
  		state_probability = [abs(pmat1[0,i]-0.5) for i in range(len(state)) if state[i]==1]
  		inverted_state = state[:]
  		if state_probability == []:
@@ -49,8 +48,9 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
  			temp_best_cost = temp_cost
  			temp_best_state = sub_optimal_state
  		pmat1,pmat2,pmat3 = update_function(pmat1,pmat2,pmat3,sub_optimal_state,calculate_conflict(sub_optimal_state, graph),t,alpha,beta)
-	 	t += 1
+
 	print(temp_best_cost)
+	temp_best_state = local_search(graph,temp_best_state,len(state))
 	print(temp_best_state)
 
 def local_search(graph,state,batch_size):
