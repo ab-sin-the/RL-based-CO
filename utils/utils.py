@@ -10,8 +10,10 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
 	# pmat1~3 stores probability info
 	# Initialize the probability matrix
 	n = graph.shape[0] # node number
-	t = 0;
+	t = 0
 	max_iteration = 1000
+	temp_best_cost = 99999999
+	temp_best_state = None
 	pmat1 = np.zeros([1,n])
 	pmat2 = np.zeros([n,n])
 	pmat3 = np.zeros([n,n])
@@ -37,14 +39,16 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
  		state_probability = [abs(pmat1[i]-0.5) for i in state if state[i]==1]
  		inverted_state = state[:]
  		indx = state_probability.index(min(state_probability))
- 		inverted_state[indx]=1-inverted_state[indx]
+ 		inverted_state[indx]=1 - inverted_state[indx]
  		sub_optimal_state = local_search(graph,inverted_state,batch_size)
- 		if (cost_function(sub_optimal_state,graph)[0] < cost_function(state,graph)[0]):
- 			pmat1,pmat2,pmat3 = update_function(pmat1,pmat2,pmat3,state,cost_function(state,graph)[1],t,alpha,beta)
- 		else :
- 			pmat1,pmat2,pmat3 = update_function(pmat1,pmat2,pmat3,sub_optimal_state,cost_function(sub_optimal_state,graph)[1],t,alpha,beta)
+ 		temp_cost = cost_function(sub_optimal_state,graph)
+ 		if(temp_cost < temp_best_cost):
+ 			temp_best_cost = temp_cost
+ 			temp_best_state = sub_optimal_state
+ 		pmat1,pmat2,pmat3 = update_function(pmat1,pmat2,pmat3,sub_optimal_state,calculate_conflict(sub_optimal_state, graph),t,alpha,beta)
 	 	t += 1
-
+	print(temp_best_cost)
+	print(temp_best_state)
 
 def local_search(graph,state,batch_size):
     #local search function
