@@ -105,7 +105,7 @@ def calculate_conflict(state,graph):
 	conflict_number = 0
 	conflict_info = np.zeros([1,n])	
 	# set to contain all chosen nodes in independent set
-	for i in range(state):
+	for i in range(len(state)):
 		if (state[i] == 1):
 			state_set.add(i)
 	k = len(state_set)
