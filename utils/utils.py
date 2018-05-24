@@ -18,7 +18,7 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
 	pmat2 = np.zeros([n,n])
 	pmat3 = np.zeros([n,n])
 	for i in range(n):
-		pmat1[0,i] = 0.5
+		pmat1[1,i] = 0.5
 		for j in range(n):
 			if (i != j):
 				pmat2[i,j] = 0.5
@@ -36,7 +36,7 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
 	 				state = generate_random_state(n)
 	 		else:
 	 			state = local_search(graph,state,batch_size)
- 		state_probability = [abs(pmat1[i]-0.5) for i in state if state[i]==1]
+ 		state_probability = [abs(pmat1[i]-0.5) for i in range(len(state)) if state[i]==1]
  		inverted_state = state[:]
  		indx = state_probability.index(min(state_probability))
  		inverted_state[indx]=1 - inverted_state[indx]
@@ -133,7 +133,7 @@ def cost_function(state,graph):
 	connection_info = dict()
 	conflict_number = 0
 	# set to contain all chosen nodes in independent set
-	for i in range(state):
+	for i in range(len(state)):
 		if (state[i] == 1):
 			state_set.add(i)
 	k = len(state_set)
