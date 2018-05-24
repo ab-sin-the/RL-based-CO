@@ -4,12 +4,13 @@ from tqdm import tqdm
 import math
 
 # random.seed(1)
-def reinforcement_learning(alpha,beta,gamma,graph):
+def reinforcement_learning(alpha,beta,gamma,theta,graph):
 	# alpha, beta, gamma are hyperparameters
 	# graph stores the graph information with numpy matrix
 	# pmat1~3 stores probability info
 	# Initialize the probability matrix
 	n = graph.shape[0] # node number
+	t = 0;
 	pmat1 = np.zeros([1,n])
 	pmat2 = np.zeros([n,n])
 	pmat3 = np.zeros([n,n])
@@ -20,10 +21,26 @@ def reinforcement_learning(alpha,beta,gamma,graph):
 				pmat2[i,j] = 0.5
 				pmat3[i,j] = 0.5
 	# Generate the First State
-	state =[]
-	for i in range(n):
-		if random.random() <= pmat1[i]:
-			state.append(i) 
+	state = generate_state(pmat1,pmat2,pmat3)
+	while():
+	 	if (t != 0):
+	 		if(random.random()<gamma):
+	 			if (random.random()<theta):
+	 				state = generate_state(pmat1,pmat2,pmat3)
+	 			else:
+	 				state = generate_random_state(n)
+	 		else:
+	 			state = local_search(graph,state,batch_size)
+ 		state_probability = [abs(pmat[i]-0.5) for i in state if state[i]==1]
+ 		inverted_state = state[:]
+ 		indx = state_probability.index(min(state_probability))
+ 		inverted_state[indx]=1-inverted_state[indx]
+ 		sub_optimal_state = local_search(graph,inverted_state,batch_size)
+ 		if (cost_function(sub_optimal_state,graph)[0] < cost_function(state,graph)[0]):
+ 			pmat1,pmat2,pmat3 = update_function(pmat1,pmat2,pmat3,state,cost_function(state,graph)[1],t,alpha,beta)
+ 		else :
+ 			pmat1,pmat2,pmat3 = update_function(pmat1,pmat2,pmat3,sub_optimal_state,cost_function(sub_optimal_state,graph)[1],t,alpha,beta)
+	 	t += 1
 
 
 def local_search(graph,state,batch_size):
@@ -37,7 +54,7 @@ def local_search(graph,state,batch_size):
 	old_state = state.copy()
 	for i in range(len(choice)):
 		state[choice[i]] = 1 - state[choice[i]]
-		if (cost_function(state,k) < cost_function(old_state,k)):
+		if (cost_function(state,graph) < cost_function(old_state,graph)):
 			old_state[choice[i]] = 1 - old_state[choice[i]]
 		else:
 			state[choice[i]] = 1- state[choice[i]]
@@ -103,6 +120,11 @@ def cost_function(state,graph):
 	reward = (conflict_number+1)/k
 	return reward,conflict_info
 
+def generate_random_state(n):
+	state=[]
+	for i in range(n):
+		state.append(random.randint(0,1))
+	return state
 
 def generate_state(pmat1,pmat2,pmat3):
 	allstate=[]
