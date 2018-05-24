@@ -155,7 +155,7 @@ def generate_random_state(n):
 	state=[]
 	for i in range(n):
 		state.append(random.randint(0,1))
-	return state
+	return np.array(state)
 
 def generate_state(pmat1,pmat2,pmat3):
 	allstate=[]
