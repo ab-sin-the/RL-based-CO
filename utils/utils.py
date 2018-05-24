@@ -22,7 +22,7 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph):
 				pmat3[i,j] = 0.5
 	# Generate the First State
 	state = generate_state(pmat1,pmat2,pmat3)
-	while():
+	while(t):
 	 	if (t != 0):
 	 		if(random.random()<gamma):
 	 			if (random.random()<theta):
@@ -48,7 +48,7 @@ def local_search(graph,state,batch_size):
 	#run local search on batch size elements
 	choice = []
 	n = state.shape[0]
-	for i in range(n):
+	for i in range(batch_size):
 		choice.append(random.randint(0, n - 1))
 
 	old_state = state.copy()
@@ -90,8 +90,7 @@ def update_function(matrix1, matrix2, matrix3, state, old_conflicts, t, alpha, b
 	matrix1 += np.multiply(state_01, conflicts)
 	return [matrix1, matrix2, matrix3]
 
-
-def cost_function(state,graph):
+def calculate_conflict(state,graph):
 	# state is a list of 0s and 1s
 	n = graph.shape[0]
 	state_set = set()
@@ -115,10 +114,35 @@ def cost_function(state,graph):
 	for i in state_set:
 		for node in connection_info[i]:
 			if node in state_set:
-				conflict_number += 1
 				conflict_info[i] += 1
 	reward = (conflict_number+1)/k
-	return reward,conflict_info
+	return conflict_info
+def cost_function(state,graph):
+	# state is a list of 0s and 1s
+	n = graph.shape[0]
+	state_set = set()
+	connection_info = dict()
+	conflict_number = 0
+	# set to contain all chosen nodes in independent set
+	for i in range(state):
+		if (state[i] == 1):
+			state_set.add(i)
+	k = len(state_set)
+	# graph is a sparse matrix, so first represent it in a better way
+	for i in range(n):
+		temp = set()
+		for j in range(n):
+			if graph[i,j] == 1:
+				temp.add(j)
+		connection_info[i] = temp
+
+	# count conflict number
+	for i in state_set:
+		for node in connection_info[i]:
+			if node in state_set:
+				conflict_number += 1
+	reward = (conflict_number+1)/k
+	return reward
 
 def generate_random_state(n):
 	state=[]
