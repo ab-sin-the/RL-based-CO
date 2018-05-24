@@ -5,7 +5,7 @@ import numpy as np
 from tqdm import tqdm
 # To read input
 def read(file):
-    with open(file, 'r') as input:
+        with open(file, 'r') as input:
         n = int(next(input))
         E = np.zeros(shape=(n,n), dtype=np.int)
         i = 0

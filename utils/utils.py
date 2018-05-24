@@ -4,13 +4,14 @@ from tqdm import tqdm
 import math
 
 # random.seed(1)
-def reinforcement_learning(alpha,beta,gamma,theta,graph):
+def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
 	# alpha, beta, gamma are hyperparameters
 	# graph stores the graph information with numpy matrix
 	# pmat1~3 stores probability info
 	# Initialize the probability matrix
 	n = graph.shape[0] # node number
 	t = 0;
+	max_iteration = 1000
 	pmat1 = np.zeros([1,n])
 	pmat2 = np.zeros([n,n])
 	pmat3 = np.zeros([n,n])
@@ -22,7 +23,7 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph):
 				pmat3[i,j] = 0.5
 	# Generate the First State
 	state = generate_state(pmat1,pmat2,pmat3)
-	while():
+	while(t < max_iteration):
 	 	if (t != 0):
 	 		if(random.random()<gamma):
 	 			if (random.random()<theta):
@@ -31,7 +32,7 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph):
 	 				state = generate_random_state(n)
 	 		else:
 	 			state = local_search(graph,state,batch_size)
- 		state_probability = [abs(pmat[i]-0.5) for i in state if state[i]==1]
+ 		state_probability = [abs(pmat1[i]-0.5) for i in state if state[i]==1]
  		inverted_state = state[:]
  		indx = state_probability.index(min(state_probability))
  		inverted_state[indx]=1-inverted_state[indx]
