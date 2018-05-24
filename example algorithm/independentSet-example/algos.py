@@ -80,7 +80,7 @@ def seekSmallVertex(E, V, limit):
 # Algo R0
 def algoR0(E, V,chosenV):
     global calls
-    if len(chosenV)==27:
+    if len(chosenV)>=30:
         print chosenV,len(chosenV)
     # If the graph is empty
     if (not V):
@@ -116,7 +116,8 @@ def algoR0(E, V,chosenV):
 # Algo R1
 def algoR1(E, V,chosenV):
     global calls
-    if len(chosenV)>=29:
+    # print "lll"
+    if len(chosenV)>=30:
         print chosenV,len(chosenV)
     # If the graph is empty
     if (not V):
@@ -210,11 +211,12 @@ def algoR2(E, V):
 
 # Main
 calls = 0
-(n, E) = read('data/g110.in')
+(n, E) = read('data/g120.in')
 verticles = [i for i in range(n)]
 setex=set()
 # setex.add(-1)
 listchosen=[]
+# print "algo"
 print algoR1(E, verticles,setex)
 print chosen
 print calls
