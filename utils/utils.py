@@ -18,14 +18,13 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
 	pmat2 = np.zeros([n,n])
 	pmat3 = np.zeros([n,n])
 	for i in range(n):
-		pmat1[1,i] = 0.5
+		pmat1[0,i] = 0.5
 		for j in range(n):
 			if (i != j):
 				pmat2[i,j] = 0.5
 				pmat3[i,j] = 0.5
 	# Generate the First State
 	state = generate_state(pmat1,pmat2,pmat3)
-
 
 	while(t < max_iteration):
 	 	if (t != 0):
@@ -35,12 +34,16 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
 	 			else:
 	 				state = generate_random_state(n)
 	 		else:
-	 			state = local_search(graph,state,batch_size)
- 		state_probability = [abs(pmat1[i]-0.5) for i in range(len(state)) if state[i]==1]
+	 			state = local_search(graph,np.array(state),batch_size)
+
+ 		state_probability = [abs(pmat1[0,i]-0.5) for i in range(len(state)) if state[i]==1]
  		inverted_state = state[:]
- 		indx = state_probability.index(min(state_probability))
+ 		if state_probability == []:
+ 			indx = 0
+ 		else:
+ 			indx = state_probability.index(min(state_probability))
  		inverted_state[indx]=1 - inverted_state[indx]
- 		sub_optimal_state = local_search(graph,inverted_state,batch_size)
+ 		sub_optimal_state = local_search(graph,np.array(inverted_state),batch_size)
  		temp_cost = cost_function(sub_optimal_state,graph)
  		if(temp_cost < temp_best_cost):
  			temp_best_cost = temp_cost
@@ -72,6 +75,7 @@ def update_function(matrix1, matrix2, matrix3, state, old_conflicts, t, alpha, b
 	#t is the iteration number
 	#alpha is the hyperparameter of matrix2 and matrix 3
 	#beta is the hyperparameter of matrix1
+	t = t + 10
 	state_01 = state.copy()
 	state_11 = state.copy()
 	conflicts = old_conflicts.copy()
@@ -115,13 +119,13 @@ def calculate_conflict(state,graph):
 		for j in range(n):
 			if graph[i,j] == 1:
 				temp.add(j)
-		connection_info[i] = temp
+		connection_info[0,i] = temp
 
 	# count conflict number
 	for i in state_set:
-		for node in connection_info[i]:
+		for node in connection_info[0,i]:
 			if node in state_set:
-				conflict_info[i] += 1
+				conflict_info[0,i] += 1
 	reward = (conflict_number+1)/k
 	return conflict_info
 
@@ -136,7 +140,9 @@ def cost_function(state,graph):
 	for i in range(len(state)):
 		if (state[i] == 1):
 			state_set.add(i)
+
 	k = len(state_set)
+	k = k + 1
 	# graph is a sparse matrix, so first represent it in a better way
 	for i in range(n):
 		temp = set()

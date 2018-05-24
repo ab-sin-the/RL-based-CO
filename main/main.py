@@ -30,7 +30,8 @@ def main():
     beta = 0.1
     gamma = 0.2
     theta = 0.2
-    batch_size = n / 10
+    batch_size = math.ceil(n / 10)
+    print(E)
     utils.reinforcement_learning(alpha,beta,gamma,theta,E,batch_size)
     return
 
