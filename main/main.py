@@ -3,6 +3,7 @@ sys.path.append('../utils')
 import utils
 import numpy as np
 import random
+import math
 from tqdm import tqdm
 # To read input
 def read(file):
@@ -23,17 +24,14 @@ def main():
     # Main
     file_path = '../data/g4.in'
     (n, E) = read(file_path)
+    E = np.array(E)
     verticles = [i for i in range(n)]
-    pmat1 = np.zeros([1,n])  #for test
-    pmat2 = np.zeros([n,n])
-    pmat3 = np.zeros([n,n])
-    for i in range(n):
-        pmat1[0,i] = random.random()
-        for j in range(n):
-            if (i != j):
-                pmat2[i,j] = 0.5
-                pmat3[i,j] = 0.5
-    print utils.generate_state(pmat1,pmat2,pmat3)
+    alpha = 0.1
+    beta = 0.1
+    gamma = 0.2
+    theta = 0.2
+    batch_size = n / 10
+    utils.reinforcement_learning(alpha,beta,gamma,theta,E,batch_size)
     return
 
 

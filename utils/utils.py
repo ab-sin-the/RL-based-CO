@@ -18,7 +18,7 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
 	pmat2 = np.zeros([n,n])
 	pmat3 = np.zeros([n,n])
 	for i in range(n):
-		pmat1[1,i] = 0.5
+		pmat1[0,i] = 0.5
 		for j in range(n):
 			if (i != j):
 				pmat2[i,j] = 0.5
