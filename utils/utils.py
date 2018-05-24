@@ -4,6 +4,8 @@ from tqdm import tqdm
 import math
 import time
 # random.seed(1)
+
+global connection_info
 def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
 	# alpha, beta, gamma are hyperparameters
 	# graph stores the graph information with numpy matrix
@@ -11,7 +13,7 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
 	# Initialize the probability matrix
 	n = graph.shape[0] # node number
 	t = 0
-	max_iteration = 1000
+	max_iteration = 2000
 	temp_best_cost = 99999999
 	temp_best_state = None
 	pmat1 = np.zeros([1,n])
@@ -23,6 +25,16 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
 			if (i != j):
 				pmat2[i,j] = 0.5
 				pmat3[i,j] = 0.5
+	global connection_info
+	connection_info = dict()
+	# graph is a sparse matrix, so first represent it in a better way
+	for i in range(n):
+		temp = set()
+		for j in range(n):
+			if graph[i,j] == 1:
+				temp.add(j)
+		connection_info[i] = temp
+
 	# Generate the First State
 	state = generate_state(pmat1,pmat2,pmat3)
 
@@ -107,7 +119,7 @@ def calculate_conflict(state,graph):
 	# state is a list of 0s and 1s
 	n = graph.shape[0]
 	state_set = set()
-	connection_info = dict()
+	global connection_info 
 	conflict_number = 0
 	conflict_info = np.zeros([1,n])	
 	# set to contain all chosen nodes in independent set
@@ -115,17 +127,9 @@ def calculate_conflict(state,graph):
 		if (state[i] == 1):
 			state_set.add(i)
 	k = len(state_set)
-	# graph is a sparse matrix, so first represent it in a better way
-	for i in range(n):
-		temp = set()
-		for j in range(n):
-			if graph[i,j] == 1:
-				temp.add(j)
-		connection_info[0,i] = temp
-
 	# count conflict number
 	for i in state_set:
-		for node in connection_info[0,i]:
+		for node in connection_info[i]:
 			if node in state_set:
 				conflict_info[0,i] += 1
 	reward = (conflict_number+1)/k
@@ -136,7 +140,7 @@ def cost_function(state,graph):
 	# state is a list of 0s and 1s
 	n = graph.shape[0]
 	state_set = set()
-	connection_info = dict()
+	global connection_info
 	conflict_number = 0
 	# set to contain all chosen nodes in independent set
 	for i in range(len(state)):
@@ -145,13 +149,6 @@ def cost_function(state,graph):
 
 	k = len(state_set)
 	k = k + 1
-	# graph is a sparse matrix, so first represent it in a better way
-	for i in range(n):
-		temp = set()
-		for j in range(n):
-			if graph[i,j] == 1:
-				temp.add(j)
-		connection_info[i] = temp
 
 	# count conflict number
 	for i in state_set:
