@@ -8,6 +8,12 @@
 import csv
 import numpy as np
 
+class item:
+    def __init__(self):
+        # E = np.zeros(shape=(n,n), dtype=np.int)
+        self.set = set()     
+    
+chosen=set()
 # To read input
 def read(file):
     with open(file, 'r') as input:
@@ -72,8 +78,10 @@ def seekSmallVertex(E, V, limit):
 # ==========================
             
 # Algo R0
-def algoR0(E, V):
+def algoR0(E, V,chosenV):
     global calls
+    if len(chosenV)==27:
+        print chosenV,len(chosenV)
     # If the graph is empty
     if (not V):
         return 0
@@ -82,7 +90,8 @@ def algoR0(E, V):
     if (d == 0):
         V.remove(v);
         calls += 1
-        return 1 + algoR0(E, V)
+        chosenV.add(v)
+        return 1 + algoR0(E, V,chosenV)
     # Otherwise
     # Find maximum degree
     u = seekMaximumDegree(E, V)
@@ -90,11 +99,25 @@ def algoR0(E, V):
     V2.remove(u)
     removeNeighbors(E, V, u)
     calls += 2
-    return max(1 + algoR0(E, V), algoR0(E, V2))
+    # return max(1+algoR0(E, V),algoR0(E, V2))
+    # newchosenV=chosenV.append(u)
+    newchosenV=chosenV
+    newchosenV.add(u)
+    first=(1 + algoR0(E, V, newchosenV))
+    second=algoR0(E, V2,chosenV)
+    if first>second:
+        # chosen.add(v)
+        # print "chosenV",chosenV
+        return first
+    else:  
+        # print "chosenV",chosenV  
+        return second #max(1+algoR0(E, V),algoR0(E, V2))
 
 # Algo R1
-def algoR1(E, V):
+def algoR1(E, V,chosenV):
     global calls
+    if len(chosenV)>=29:
+        print chosenV,len(chosenV)
     # If the graph is empty
     if (not V):
         return 0
@@ -103,11 +126,14 @@ def algoR1(E, V):
     if (d == 0):
         V.remove(v);
         calls += 1
-        return 1 + algoR1(E, V)
+        chosenV.add(v)
+        return 1 + algoR1(E, V,chosenV)
     if (d == 1):
         removeNeighbors(E, V, v)
         calls += 1
-        return 1 + algoR1(E, V)
+        chosenV.add(v)
+        # chosen.add(v)
+        return 1 + algoR1(E, V,chosenV)
     # Otherwise
     # Find maximum degree
     u = seekMaximumDegree(E, V)
@@ -115,11 +141,14 @@ def algoR1(E, V):
     V2.remove(u)
     removeNeighbors(E, V, u)
     calls += 2
-    return max(1 + algoR1(E, V), algoR1(E, V2))
+    newchosenV=chosenV.copy()
+    newchosenV.add(u)
+    return max(1 + algoR1(E, V,newchosenV), algoR1(E, V2,chosenV))
 
 # AlgoR2
 def algoR2(E, V):
     global calls
+    print V
     # If the graph is empty
     if (not V):
         return 0
@@ -176,11 +205,18 @@ def algoR2(E, V):
     V2.remove(u)
     removeNeighbors(E, V, u)
     calls += 2
+    
     return max(1 + algoR2(E, V), algoR2(E, V2))
 
 # Main
 calls = 0
-(n, E) = read('data/g100.in')
+(n, E) = read('data/g110.in')
 verticles = [i for i in range(n)]
-print algoR2(E, verticles)
+setex=set()
+# setex.add(-1)
+listchosen=[]
+print algoR1(E, verticles,setex)
+print chosen
 print calls
+# if listchosen:
+#     print "lsitchjosen"
