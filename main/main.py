@@ -23,8 +23,6 @@ def main():
     file_path = '../data/g4.in'
     (n, E) = read(file_path)
     verticles = [i for i in range(n)]
-    print (n,E)
-    print (verticles)
     return
 
 

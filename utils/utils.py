@@ -31,7 +31,7 @@ def local_search(graph,state,batch_size):
 	#run local search on batch size elements
 	choice = []
 	n = state.shape[0]
-	for i in range(n):
+	for i in range(batch_size):
 		choice.append(random.randint(0, n - 1))
 
 	old_state = state.copy()
