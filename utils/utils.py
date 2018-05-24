@@ -150,6 +150,10 @@ def cost_function(state,graph):
 				conflict_number += 1
 	reward = (conflict_number+1)/k
 	return reward
+	
+def flipcoin(p):
+	r=random.random()
+	return r<p
 
 def generate_random_state(n):
 	state=[]
@@ -162,11 +166,14 @@ def generate_state(pmat1,pmat2,pmat3):
 	n=len(pmat1[0])
 	for i in range(n):
 		allstate.append(-1)
-
+	pma1_list=pmat1[0].tolist()
+	first_index=pma1_list.index(max(pma1_list))	
 	chosen =[]
 	if flipcoin(max(pma1_list)):
 		chosen.append(first_index)
 		allstate[first_index]=1
+	else:
+		allstate[first_index]=0	
 	for i in range(n-1):
 		prob=0.0
 		newnode=random.randint(0, n-1)
@@ -183,4 +190,4 @@ def generate_state(pmat1,pmat2,pmat3):
 			allstate[newnode]=1
 		else:
 			allstate[newnode]=0
-		return allstate
+	return allstate
