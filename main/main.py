@@ -28,10 +28,10 @@ def main():
     verticles = [i for i in range(n)]
     alpha = 0.2
     beta = 0.2
-    gamma = 0.3
+    gamma = 0.1
     theta = 0.8
     batch_size = math.ceil(n / 10)
-    batch_size = 5
+    batch_size = 1
     print(E)
     utils.reinforcement_learning(alpha,beta,gamma,theta,E,batch_size)
     return
