@@ -52,7 +52,7 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
 	 	else:
 	 		state = generate_random_state(n)
 	 	old_state1 = generate_state(pmat1,pmat2,pmat3)
-	 	old_state = state.copy()
+	 	old_state = state[:]
 	 	state = local_search(graph,np.array(state),batch_size)
 	 	while(sum(abs(np.array(old_state) - np.array(state))) != 0):
 	 		old_state = state.copy()
