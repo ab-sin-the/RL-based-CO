@@ -51,31 +51,38 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
 	 		state = generate_state(pmat1,pmat2,pmat3)
 	 	else:
 	 		state = generate_random_state(n)
+
 	 	old_state1 = generate_state(pmat1,pmat2,pmat3)
+
+
+	 	state_probability = [abs(pmat1[0,i]-0.5) for i in range(len(state)) if state[i]==1]
+ 		state = state[:]
+ 		if state_probability == []:
+ 			indx = 0
+ 		else:
+ 			indx = state_probability.index(min(state_probability))
+ 		state[indx]=1 - state[indx]
+
+
 	 	old_state = state.copy()
 	 	state = local_search(graph,np.array(state),batch_size)
 	 	while(sum(abs(np.array(old_state) - np.array(state))) != 0):
 	 		old_state = state.copy()
 	 		state = local_search(graph,np.array(state),batch_size)
- 			#pmat1,pmat2,pmat3 = update_function(pmat1,pmat2,pmat3,state,calculate_conflict(state, graph),t,alpha,beta)
- 		pmat1,pmat2,pmat3 = update_function(pmat1,pmat2,pmat3,np.array(state),calculate_conflict(state, graph),t,alpha,beta)
- 		#state_probability = [abs(pmat1[0,i]-0.5) for i in range(len(state)) if state[i]==1]
- 		#inverted_state = state[:]
- 		#if state_probability == []:
- 	#		indx = 0
- 	#	else:
- 	#		indx = state_probability.index(min(state_probability))
- 	#	inverted_state[indx]=1 - inverted_state[indx]
- 	#	sub_optimal_state = local_search(graph,np.array(inverted_state),batch_size)
+ 			pmat1,pmat2,pmat3 = update_function(pmat1,pmat2,pmat3,state,calculate_conflict(state, graph),t,alpha,beta)
+ 		#pmat1,pmat2,pmat3 = update_function(pmat1,pmat2,pmat3,np.array(state),calculate_conflict(state, graph),t,alpha,beta)
+ 		
+ 		#sub_optimal_state = local_search(graph,np.array(inverted_state),batch_size)
  		temp_cost = cost_function(state,graph)
  		if(temp_cost < temp_best_cost):
  			temp_best_cost = temp_cost
  			temp_best_state = state
- 		if ((t + 1)% 400 == 0):
+ 		if ((t + 1)% 100 == 0):
  			new_state = generate_state(pmat1,pmat2,pmat3)
- 			print(sum(abs(np.array(new_state) - np.array(old_state1))))
- 			print(temp_best_cost)
- 			print(sum(temp_best_state))
+ 			
+ 			#print(sum(abs(np.array(new_state) - np.array(old_state1))))
+ 			#print(temp_best_cost)
+ 			#print(sum(temp_best_state))
 	
 	temp_best_state = local_search(graph,temp_best_state,len(state))
 	print(temp_best_state)
@@ -116,8 +123,6 @@ def update_function(matrix1, matrix2, matrix3, state, old_conflicts, t, alpha, b
 
 	update_matrix2 = np.outer(state_01, conflicts)
 	update_matrix3 = np.outer((1 - state_01), conflicts)
-	if (math.floor(t) % 400 == 0):
-		print(alpha / math.log(t))
 	update_matrix2 = np.multiply(update_matrix2, expanded_state_11)
 	update_matrix3 = np.multiply(update_matrix3, expanded_state_11)
 	matrix2 += (alpha / math.log(t) ) * update_matrix2
@@ -172,7 +177,7 @@ def cost_function(state,graph):
 		for node in connection_info[i]:
 			if node in state_set:
 				conflict_number += 1
-	reward = ((conflict_number+1))/k
+	reward = ((conflict_number+1)^2)/k
 	return reward
 	
 def flipcoin(p):
@@ -205,10 +210,11 @@ def generate_state(pmat1,pmat2,pmat3):
 			newnode=random.randint(0, n-1)
 		for j in range(n):
 			if (allstate[j]==1):
-				prob+=pmat2[j,i]
+				prob+=pmat2[j,newnode]
 			if (allstate[j]==0):
-				prob+=pmat3[j,i]
+				prob+=pmat3[j,newnode]
 		prob/=(i+1)		
+		print(prob)
 		if random.random() <= prob:
 			chosen.append(newnode)
 			allstate[newnode]=1

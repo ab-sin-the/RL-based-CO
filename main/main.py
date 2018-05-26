@@ -22,16 +22,16 @@ def read(file):
 
 def main():
     # Main
-    file_path = '../data/g100.in'
+    file_path = '../data/g30.in'
     (n, E) = read(file_path)
     E = np.array(E)
     verticles = [i for i in range(n)]
-    alpha = 0.002
-    beta = 0.002
+    alpha = 0.005
+    beta = 0.005
     gamma = 0.01
     theta = 0.8
     batch_size = math.ceil(n / 10)
-    batch_size = 4
+    batch_size = n - 1
     print(E)
     utils.reinforcement_learning(alpha,beta,gamma,theta,E,batch_size)
     return
