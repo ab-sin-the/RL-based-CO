@@ -53,6 +53,7 @@ def reinforcement_learning(alpha,beta,gamma,theta,graph,batch_size):
 	 		state = generate_random_state(n)
 
 	 	old_state1 = generate_state(pmat1,pmat2,pmat3)
+<<<<<<< HEAD
 
 
 	 	state_probability = [abs(pmat1[0,i]-0.5) for i in range(len(state)) if state[i]==1]
