@@ -198,11 +198,15 @@ def generate_state(pmat1,pmat2,pmat3):
 		allstate[first_index]=1
 	else:
 		allstate[first_index]=0	
+	nodelist=[i for i in range(n)]
+	nodelist.remove(first_index)	
 	for i in range(n-1):
 		prob=0.0
-		newnode=random.randint(0, n-1)
-		while allstate[newnode]!=-1:
-			newnode=random.randint(0, n-1)
+		newnode=nodelist[random.randint(0, len(nodelist)-1)]
+		nodelist.remove(newnode)
+		# newnode=random.randint(0, n-1)
+		# while allstate[newnode]!=-1:
+		# 	newnode=random.randint(0, n-1)
 		for j in range(n):
 			if (allstate[j]==1):
 				prob+=pmat2[j,newnode]
