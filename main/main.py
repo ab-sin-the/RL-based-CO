@@ -22,7 +22,7 @@ def read(file):
 
 def main():
     # Main
-    file_path = '../data/g100.in'
+    file_path = '../data/g110.in'
     (n, E) = read(file_path)
     E = np.array(E)
     verticles = [i for i in range(n)]
