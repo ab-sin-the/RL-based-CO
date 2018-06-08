@@ -6,6 +6,7 @@ import random
 import math
 from tqdm import tqdm
 # To read input
+#benchmark: sites.nlsde.buaa.edu.cn/~kexu/benchmarks/graph-benchmarks.htm
 def read(file):
     with open(file, 'r') as input:
         n = int(next(input))
@@ -22,7 +23,7 @@ def read(file):
 
 def main():
     # Main
-    file_path = '../data/g110.in'
+    file_path = '../data/frb35.in'
     (n, E) = read(file_path)
     E = np.array(E)
     verticles = [i for i in range(n)]
@@ -33,6 +34,7 @@ def main():
     batch_size = math.ceil(n / 10)
     batch_size = 4
     print(E)
+    print(type(E))
     utils.reinforcement_learning(alpha,beta,gamma,theta,E,batch_size)
     return
 
