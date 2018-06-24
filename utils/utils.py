@@ -204,25 +204,34 @@ def generate_random_state(n):
 	return np.array(state)
 
 def generate_state(pmat1,pmat2,pmat3):
+	#generate state by the three probability matrix
 	allstate=[]
 	choice = []
 	n=len(pmat1[0])
 	for i in range(n):
 		allstate.append(-1)
 	pma1_list=pmat1[0].tolist()
-	first_index=pma1_list.index(max(pma1_list))	
+	#first choose highest prob node 
+	first_index=pma1_list.index(max(pma1_list))	 
 	chosen =[]
 	if flipcoin(max(pma1_list)):
 		chosen.append(first_index)
 		allstate[first_index]=1
 	else:
 		allstate[first_index]=0	
+	nodelist=[i for i in range(n)]
+	nodelist.remove(first_index)
+	#choose the other n-1 nodes	
 	for i in range(n-1):
 		prob=0.0
-		newnode=random.randint(0, n-1)
-		while allstate[newnode]!=-1:
-			newnode=random.randint(0, n-1)
-		for j in range(i):
+		newnode=nodelist[random.randint(0, len(nodelist)-1)]
+		nodelist.remove(newnode)
+		# newnode=random.randint(0, n-1)
+		# while allstate[newnode]!=-1:
+		# 	newnode=random.randint(0, n-1)
+
+		#determine node by chosen nodes' prob in matrix 2,3 
+		for j in range(n):
 			if (allstate[j]==1):
 				prob+=pmat2[j,newnode]
 			if (allstate[j]==0):
