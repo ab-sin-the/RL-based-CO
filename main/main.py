@@ -27,10 +27,11 @@ def main():
     (n, E) = read(file_path)
     E = np.array(E)
     verticles = [i for i in range(n)]
-    alpha = 0.05
+    alpha = 0.5
     beta = 0.005
     gamma = 0.01
-    theta = 0
+    theta = 0.8
+
     batch_size = math.ceil(n / 5)
     batch_size = n - 1
     utils.reinforcement_learning(alpha,beta,gamma,theta,E,batch_size)
